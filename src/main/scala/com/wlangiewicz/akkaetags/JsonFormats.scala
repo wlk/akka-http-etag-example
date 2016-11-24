@@ -1,7 +1,9 @@
 package com.wlangiewicz.akkaetags
 
+import akka.http.scaladsl.model.DateTime
 import spray.json.DefaultJsonProtocol
 
-class JsonFormats extends DefaultJsonProtocol {
-  implicit val bookFormat = jsonFormat3(Book)
+trait JsonFormats extends DefaultJsonProtocol {
+  implicit val dateTimeFormat = jsonFormat9(DateTime.apply)
+  implicit val bookFormat = jsonFormat4(Book)
 }

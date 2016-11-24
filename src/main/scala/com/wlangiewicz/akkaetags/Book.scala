@@ -1,4 +1,14 @@
 package com.wlangiewicz.akkaetags
 
-case class Book(id: Int, name: String, author: String)
+import akka.http.scaladsl.model.DateTime
+import akka.http.scaladsl.model.headers.EntityTag
 
+case class Book(id: Int, name: String, author: String, lastUpdated: DateTime)
+
+/*
+object Book {
+  def eTag: EntityTag = {
+
+  }
+}
+*/
