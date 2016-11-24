@@ -16,7 +16,7 @@ private[akkaetags] object MD5 {
 trait ETags {
   // Note that in both cases we are using only `lastUpdated` to calculate ETag
   def bookETag(book: Book): EntityTag = {
-    EntityTag(MD5.md5sum(book.lastUpdated.toIsoDateString), weak = true)
+    EntityTag(MD5.md5sum(book.lastUpdated.toIsoDateTimeString), weak = true)
   }
 
   def lightweightBookETag(lastUpdated: DateTime): EntityTag = {

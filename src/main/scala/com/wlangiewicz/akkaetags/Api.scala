@@ -19,20 +19,37 @@ class Api(booksService: BooksService) extends JsonFormats with ETags {
         }
       } ~
         path("books-etags" / IntNumber) { id =>
-          booksService.getBookLastUpdatedById(id) match {
-            case Some(lastUpdated) =>
-              val etag = lightweightBookETag(lastUpdated)
-              conditional(etag, lastUpdated) {
-                complete {
-                  booksService.findById(id) match {
-                    case Some(book) => book
-                    case None       => HttpResponse(NotFound, entity = "Not found")
+          optionalHeaderValueByName("If-None-Match") {
+            case Some(_) =>
+              booksService.getBookLastUpdatedById(id) match {
+                case Some(lastUpdated) =>
+                  val eTag = lightweightBookETag(lastUpdated)
+                  conditional(eTag, lastUpdated) {
+                    complete {
+                      booksService.findById(id) match {
+                        case Some(book) => book
+                        case None       => HttpResponse(NotFound, entity = "Not found")
+                      }
+                    }
                   }
+                case None => complete {
+                  HttpResponse(NotFound, entity = "Not found")
                 }
               }
-            case None => complete {
-              HttpResponse(NotFound, entity = "Not found")
-            }
+            case None =>
+              booksService.findById(id) match {
+                case Some(book) =>
+                  conditional(bookETag(book), book.lastUpdated) {
+                    complete {
+                      book
+                    }
+                  }
+                case None =>
+                  complete {
+                    HttpResponse(NotFound, entity = "Not found")
+                  }
+              }
+
           }
         }
     }
