@@ -10,6 +10,15 @@ organization := "com.wlangiewicz"
 
 scalaVersion := "2.12.0"
 
+scalacOptions := Seq(
+  "-unchecked",
+  "-deprecation",
+  "-encoding", "utf8",
+  "-Xlint:missing-interpolator",
+  "-Ywarn-unused-import",
+  "-Ywarn-dead-code")
+
+
 libraryDependencies ++= {
   val akkaVersion = "2.4.12"
   val akkaHttpVersion = "10.0.0"
