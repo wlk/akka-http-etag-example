@@ -2,9 +2,8 @@ package com.wlangiewicz.akkaetags
 
 import java.security.MessageDigest
 
+import akka.http.scaladsl.model.DateTime
 import akka.http.scaladsl.model.headers.EntityTag
-
-import scala.language.implicitConversions
 
 private[akkaetags] object MD5 {
   private val md5 = MessageDigest.getInstance("MD5")
@@ -15,10 +14,12 @@ private[akkaetags] object MD5 {
 }
 
 trait ETags {
-  class ETaggedBook(book: Book) {
-    def eTag = EntityTag(MD5.md5sum(book.author + book.id + book.lastUpdated.toIsoDateTimeString + book.name), weak = true)
+  // Note that in both cases we are using only `lastUpdated` to calculate ETag
+  def bookETag(book: Book): EntityTag = {
+    EntityTag(MD5.md5sum(book.lastUpdated.toIsoDateString), weak = true)
   }
 
-  implicit def eTag(book: Book): ETaggedBook = new ETaggedBook(book)
-
+  def lightweightBookETag(lastUpdated: DateTime): EntityTag = {
+    EntityTag(MD5.md5sum(lastUpdated.toIsoDateTimeString), weak = true)
+  }
 }
