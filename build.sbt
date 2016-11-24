@@ -6,6 +6,8 @@ name := "akka-http-etag-example"
 
 version := "0.1.0"
 
+organization := "com.wlangiewicz"
+
 scalaVersion := "2.12.0"
 
 libraryDependencies ++= {
