@@ -23,12 +23,11 @@ class Api(booksService: BooksService) extends JsonFormats with ETags {
             case Some(_) =>
               booksService.getBookLastUpdatedById(id) match {
                 case Some(lastUpdated) =>
-                  val eTag = lightweightBookETag(lastUpdated)
-                  conditional(eTag, lastUpdated) {
+                  conditional(lightweightBookETag(lastUpdated), lastUpdated) {
                     complete {
                       booksService.findById(id) match {
                         case Some(book) => book
-                        case None       => HttpResponse(NotFound, entity = "Not found")
+                        case None       => HttpResponse(NotFound, entity = "Not found, but this should be caught earlier")
                       }
                     }
                   }
@@ -49,7 +48,6 @@ class Api(booksService: BooksService) extends JsonFormats with ETags {
                     HttpResponse(NotFound, entity = "Not found")
                   }
               }
-
           }
         }
     }
