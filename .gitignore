@@ -1,0 +1,17 @@
+*.class
+*.log
+.cache
+.history
+
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+project/project/
+
+.idea
+*.iml
+app/.idea
+app/project/target/
+target/
+
