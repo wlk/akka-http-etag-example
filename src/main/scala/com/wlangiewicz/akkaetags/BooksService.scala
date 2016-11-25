@@ -5,7 +5,8 @@ import akka.http.scaladsl.model.DateTime
 class BooksService {
 
   private val books = Vector(
-    Book(1, "Lord of the Rings", "J. R. R. Tolkien", DateTime.now)
+    Book(1, "Lord of the Rings", "J. R. R. Tolkien", DateTime(2016, 10, 25, 12, 45, 0)),
+    Book(2, "Akka in Action", "Rob Bakker, Raymond Roestenburg, Rob Williams", DateTime(2016, 10, 21, 12, 45, 0))
   )
 
   def getBookLastUpdatedById(id: Int): Option[DateTime] = {

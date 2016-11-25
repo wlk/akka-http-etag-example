@@ -12,7 +12,7 @@ object Main extends App {
 
   val booksService = new BooksService()
 
-  val api = new Api(booksService)
+  val api = new BooksApi(booksService)
 
   val server = Http().bindAndHandle(api.routes, interface = "0.0.0.0", port = 8080)
 

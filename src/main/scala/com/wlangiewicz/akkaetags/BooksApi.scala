@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.NotFound
 import akka.http.scaladsl.server.Route
 
-class Api(booksService: BooksService) extends JsonFormats with ETags {
+class BooksApi(booksService: BooksService) extends JsonFormats with ETags {
   val routes: Route =
     get {
       path("books" / IntNumber) { id =>
