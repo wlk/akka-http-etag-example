@@ -27,6 +27,7 @@ class BooksApi(booksService: BooksService) extends JsonFormats with ETags {
               // First case, we get request with some value of "If-None-Match" header, right now we are unable to say if it's valid ETag
               booksService.getBookLastUpdatedById(id) match {
                 case Some(lastUpdated) =>
+                  println(s"book id: $id exists and If-None-Match was passed")
                   // "conditional" directive receives the ETag extracted from the request, and compares it to "lightweightBookETag(lastUpdated)"
                   // which was calculated only based on the date of the book - we didn't have to fetch full object from the DB
                   conditional(lightweightBookETag(lastUpdated), lastUpdated) {
@@ -34,8 +35,11 @@ class BooksApi(booksService: BooksService) extends JsonFormats with ETags {
                     complete {
                       // If ETag was invalid (for example outdated), we continue, this time fetching full object from DB (which is more time consuming) and return it normally
                       booksService.findById(id) match {
-                        case Some(book) => book
-                        case None       => throw new RuntimeException("This shouldn't happen")
+                        case Some(book) =>
+                          println(s"returning complete Book object with id: ${book.id} - ETag was invalid")
+                          book
+                        case None =>
+                          throw new RuntimeException("This shouldn't happen in sample project")
                       }
                     }
                   }
@@ -49,6 +53,7 @@ class BooksApi(booksService: BooksService) extends JsonFormats with ETags {
               // Second case, request doesn't contain "If-None-Match" header, we know that we have to return 200 with full body, so we do that (alternatively we return 404 if resource wasn't found)
               booksService.findById(id) match {
                 case Some(book) =>
+                  println(s"book id: $id exists and If-None-Match was NOT passed")
                   conditional(bookETag(book), book.lastUpdated) {
                     complete {
                       book

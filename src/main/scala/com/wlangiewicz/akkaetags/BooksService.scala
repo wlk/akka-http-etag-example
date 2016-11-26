@@ -10,12 +10,14 @@ class BooksService {
   )
 
   def getBookLastUpdatedById(id: Int): Option[DateTime] = {
+    println(s"getBookLastUpdatedById called with id: $id")
     // this is a lightweight operation that fetches only DateTime for specific book
     books.find(b => b.id == id).map(_.lastUpdated)
   }
 
   def findById(id: Int): Option[Book] = {
     // this simulates a time consuming object fetching
+    println(s"findById called with id: $id")
     Thread.sleep(1000)
     books.find(b => b.id == id)
   }
