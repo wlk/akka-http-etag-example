@@ -2,6 +2,12 @@
 
 This is a example project that shows how to effectively implement ETags and `Last-Modified` headers in akka-http projects.
 
+Start application by running `sbt run`.
+
+It will start HTTP server on port `8080`, there are 2 endpoints you can try `/books` and `/books-etags`, both accept single parameter - the book id.
+
+To read more about this project, see my blog post: https://www.wlangiewicz.com/2016/11/25/etags-in-akka-http/
+
 I have explained everything in the comments in `BooksApi`, this is an overview of how such requests are processed:
 
 There are 2 main cases to consider:
